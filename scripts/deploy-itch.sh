@@ -32,12 +32,13 @@ jobs:
           test -n "$BUTLER_API_KEY" || (echo "Missing secret BUTLER_API_KEY" && exit 1)
           echo "Deploy target: ${ITCH_USER}/${ITCH_GAME}:${ITCH_CHANNEL}"
 
-      - name: Install butler
-        run: |
-          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-          unzip -q butler.zip -d butler
-          chmod +x butler/butler
-          butler/butler -V
+    - name: Install butler
+     run: |
+        curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+        unzip -q butler.zip -d butler
+        chmod +x butler/butler
+        echo "$PWD/butler" >> "$GITHUB_PATH"
+        ./butler/butler -V
 
       - name: Build web release
         run: bash scripts/build-web.sh
