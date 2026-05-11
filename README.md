@@ -1,4 +1,4 @@
-Playable at: 
+Playable at: https://denisgamolya.itch.io/slingshotter
 
 The player needs to drag the slinshot and fire a red ball based on the angle and distance dragged.
 The player can only complete a level by using the slingshot to knock the green ball down.
