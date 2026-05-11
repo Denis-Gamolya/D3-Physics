@@ -33,17 +33,18 @@ jobs:
           echo "Deploy target: ${ITCH_USER}/${ITCH_GAME}:${ITCH_CHANNEL}"
 
     - name: Install butler
-     run: |
-        curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-        unzip -q butler.zip -d butler
-        chmod +x butler/butler
-        echo "$PWD/butler" >> "$GITHUB_PATH"
-        ./butler/butler -V
+  run: |
+    curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+    unzip -q butler.zip -d butler
+    chmod +x butler/butler
+    echo "BUTLER_PATH=$PWD/butler" >> "$GITHUB_ENV"
+    echo "$PWD/butler" >> "$GITHUB_PATH"
+    butler/butler -V
 
-      - name: Build web release
-        run: bash scripts/build-web.sh
+- name: Build web release
+  run: bash scripts/build-web.sh
 
-      - name: Deploy to itch.io
-        run: |
-          $PWD/butler/butler status
-          $PWD/butler/butler push dist "${ITCH_USER}/${ITCH_GAME}:${ITCH_CHANNEL}" --userversion "${USER_VERSION::7}" --if-changed
+- name: Deploy to itch.io
+  run: |
+    ${{ env.BUTLER_PATH }}/butler status
+    ${{ env.BUTLER_PATH }}/butler push dist "${ITCH_USER}/${ITCH_GAME}:${ITCH_CHANNEL}" --userversion "${USER_VERSION::7}" --if-changed
